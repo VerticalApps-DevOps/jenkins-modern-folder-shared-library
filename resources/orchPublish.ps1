@@ -1,3 +1,5 @@
+$project = Get-Content -Raw -Path $env:WORKSPACE\project.json | ConvertFrom-Json
+
 $auth = @{
    tenancyName = $env:tenancy
    usernameOrEmailAddress = $env:user
@@ -16,9 +18,9 @@ $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
 Write-Output "Beginning UIPath Orchestrator publish"
  
 $Directory = "$env:JENKINS_HOME\jobs\$env:JOB_NAME\builds\$env:BUILD_NUMBER\"
-$Package = Get-ChildItem -Path $Directory -Filter *.nupkg
-$FilePath = $Directory + $Package.Name
-$FieldName = $Package.Name.Replace(".nupkg","")
+$Package = $project.name + "." + $project.projectVersion + ".nupkg"
+$FilePath = $Directory + $Package
+$FieldName = $Package.Replace(".nupkg","")
 $ContentType = 'multipart/form-data'
 
 $FileStream = [System.IO.FileStream]::new($filePath, [System.IO.FileMode]::Open)
@@ -37,13 +39,11 @@ Write-Output "The package has been successfully published to Orchestrator and ne
 
 Write-Output "Beginning Process Creation"
 
-$PackageArray = $FieldName.split(".")
-
 $release = @{
-   Name = $PackageArray[0]
+   Name = $project.name
    EnvironmentId = $env:environmentId
-   ProcessKey = $PackageArray[0]
-   ProcessVersion = "$($PackageArray[1]).$($PackageArray[2]).$($PackageArray[3])"
+   ProcessKey = $project.name
+   ProcessVersion = $project.projectVersion
 }
 
 Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
