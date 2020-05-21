@@ -38,6 +38,11 @@ $MultipartContent.Add($FileContent)
 Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Processes/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($tokenstring)
 Write-Output "The package has been successfully published to Orchestrator and nexus"
 
+Write-Output "Beginning call to read Releases"
+$rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
+
+Write-Output $rels
+
 Write-Output "Beginning Process Creation"
 
 $release = @{
@@ -46,10 +51,6 @@ $release = @{
    ProcessKey = $project.name
    ProcessVersion = $project.projectVersion
 }
-
-rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
-
-Write-Output rels
 
 Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
 
