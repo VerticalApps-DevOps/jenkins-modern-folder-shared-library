@@ -47,6 +47,10 @@ $release = @{
    ProcessVersion = $project.projectVersion
 }
 
+rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
+
+Write-Output rels
+
 Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
 
 Write-Output "Process Successfully Created"
