@@ -50,12 +50,13 @@ $rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Metho
 
 $updated = 0
 
-$releases = $rels | ConvertFrom-Json
+$releases = $rels | ConvertTo-Json
+$releases = $eleases | ConvertFrom-Json
 Write-Output $releases
-$processes = $releases.value | ConvertFrom-Json
+<#$processes = $releases.value | ConvertFrom-Json
 Write-Output $processes
 
-<#Write-Output $releases.@odata.count
+Write-Output $releases.@odata.count
 Write-Output $releases.value[0].ProcessKey
 
 if ($rels.@odata.count -gt 0) {
