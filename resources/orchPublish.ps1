@@ -52,7 +52,8 @@ Write-Output $rels
 
 $updated = 0
 
-Write-Output $updated
+Write-Output $rels.@odata.count
+Write-Output $rels.value[0].ProcessKey
 <#
 if ($rels.@odata.count -gt 0) {
    for ($i = 0; $i -lt $rels.@odata.count; $i++) {
