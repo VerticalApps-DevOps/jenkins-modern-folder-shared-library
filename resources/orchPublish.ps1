@@ -52,6 +52,8 @@ Write-Output $rels
 
 $updated = 0
 
+Write-Output $updated
+<#
 if ($rels.@odata.count -gt 0) {
    for ($i = 0; $i -lt $rels.@odata.count; $i++) {
       if ($rels.value[i].ProcessKey -eq $release.ProcessKey) {
@@ -67,4 +69,4 @@ if (-Not $updated) {
    Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
    Write-Output "Process Successfully Created"
 }
-
+#>
