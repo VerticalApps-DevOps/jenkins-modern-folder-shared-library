@@ -53,7 +53,8 @@ Write-Output $rels
 $updated = 0
 
 $releases = rels | ConvertFrom-Json
-Write-Output $releases
+$processes = $release.value | ConvertFrom-Json
+Write-Output $processes
 
 <#Write-Output $releases.@odata.count
 Write-Output $releases.value[0].ProcessKey
