@@ -48,11 +48,10 @@ $release = @{
 Write-Output "Beginning call to read Releases"
 $rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
 
-Write-Output $rels
-
 $updated = 0
 
 $releases = $rels | ConvertFrom-Json
+Write-Output $releases
 $processes = $releases.value | ConvertFrom-Json
 Write-Output $processes
 
