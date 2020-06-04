@@ -38,13 +38,6 @@ $MultipartContent.Add($FileContent)
 Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Processes/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($tokenstring)
 Write-Output "The package has been successfully published to Orchestrator and nexus"
 
-Write-Output "Beginning call to read Releases"
-$rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
-
-Write-Output $rels
-
-Write-Output "Beginning Process Creation"
-
 $release = @{
    Name = $project.name
    EnvironmentId = $env:environmentId
@@ -52,6 +45,26 @@ $release = @{
    ProcessVersion = $project.projectVersion
 }
 
-Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
+Write-Output "Beginning call to read Releases"
+$rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
 
-Write-Output "Process Successfully Created"
+Write-Output $rels
+
+$updated = FALSE
+
+if ($rels.@odata.count -gt 0) {
+   for ($i = 0; $i -lt $rels.@odata.count; $i++) {
+      if ($rels.value[i].ProcessKey -eq $release.ProcessKey) {
+         Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases($($rels.value[i].Id))/UiPath.Server.Configuration.OData.UpdateToLatestPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
+         $updated  = TRUE
+      }
+      
+   }
+}
+
+if (-Not $updated) {
+   Write-Output "Beginning Process Creation"
+   Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
+   Write-Output "Process Successfully Created"
+}
+
