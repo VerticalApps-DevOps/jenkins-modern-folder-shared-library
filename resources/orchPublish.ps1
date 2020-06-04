@@ -52,9 +52,12 @@ Write-Output $rels
 
 $updated = 0
 
-Write-Output $rels.@odata.count
-Write-Output $rels.value[0].ProcessKey
-<#
+$releases = rels | ConvertFrom-Json
+Write-Output $releases
+
+<#Write-Output $releases.@odata.count
+Write-Output $releases.value[0].ProcessKey
+
 if ($rels.@odata.count -gt 0) {
    for ($i = 0; $i -lt $rels.@odata.count; $i++) {
       if ($rels.value[i].ProcessKey -eq $release.ProcessKey) {
