@@ -50,13 +50,13 @@ $rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Metho
 
 Write-Output $rels
 
-$updated = $false
+$updated = 0
 
 if ($rels.@odata.count -gt 0) {
    for ($i = 0; $i -lt $rels.@odata.count; $i++) {
       if ($rels.value[i].ProcessKey -eq $release.ProcessKey) {
          Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases($($rels.value[i].Id))/UiPath.Server.Configuration.OData.UpdateToLatestPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
-         $updated  = $true
+         $updated  = 1
       }
       
    }
