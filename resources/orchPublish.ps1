@@ -51,8 +51,8 @@ $rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Metho
 $updated = 0
 
 $releases = $rels | ConvertTo-Json
-$releases = $releases | ConvertFrom-Json
-Write-Output $releases
+$releasesjson = $releases | ConvertFrom-Json
+Write-Output $releasesjson
 <#$processes = $releases.value | ConvertFrom-Json
 Write-Output $processes
 
