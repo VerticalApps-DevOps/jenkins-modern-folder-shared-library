@@ -54,7 +54,7 @@ $releases = $rels | ConvertTo-Json
 $releasesjson = $releases | ConvertFrom-Json
 Write-Output $releasesjson
 
-$processes = $releasesjson.@odata.count
+$processes = $releasesjson.odata.count
 Write-Output $processes
 
 <#
