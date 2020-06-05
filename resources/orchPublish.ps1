@@ -39,7 +39,7 @@ Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/
 Write-Output "The package has been successfully published to Orchestrator and nexus"
 
 $release = @{
-   Name = $project.name
+   Name = $project.name + "_" + $env:environmentId
    EnvironmentId = $env:environmentId
    ProcessKey = $project.name
    ProcessVersion = $project.projectVersion
@@ -61,7 +61,7 @@ $releasesjson = $releases | ConvertFrom-Json
 $processes = $releasesjson.value
 
 foreach($i in $processes) {
-   if ($i.ProcessKey -eq $release.ProcessKey -And $i.EnvironmentId -eq $release.environmentId) {
+   if ($i.ProcessKey -eq $release.ProcessKey -And $i.EnvironmentId -eq $release.EnvironmentId) {
       Write-Output "Beginning Process Update"
       $updateresponse = Invoke-RestMethod -SkipCertificateCheck -ContentType 'application/json' -Body $updateparam "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToSpecificPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
       $updated  = 1
