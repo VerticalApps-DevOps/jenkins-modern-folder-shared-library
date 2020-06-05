@@ -43,6 +43,7 @@ $release = @{
    EnvironmentId = $env:environmentId
    ProcessKey = $project.name
    ProcessVersion = $project.projectVersion
+   packageVersion = $project.projectVersion
 }
 
 Write-Output "Beginning call to read Releases"
