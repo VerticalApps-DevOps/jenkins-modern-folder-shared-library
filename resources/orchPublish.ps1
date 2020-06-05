@@ -56,7 +56,7 @@ $processes = $releasesjson.value
 
 foreach($i in $processes)
    if ($i.ProcessKey -eq $release.ProcessKey) {
-      Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases($($rels.value[i].Id))/UiPath.Server.Configuration.OData.UpdateToLatestPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
+      Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToLatestPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
       $updated  = 1
    }
 }
