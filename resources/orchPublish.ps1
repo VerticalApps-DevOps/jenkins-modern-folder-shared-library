@@ -46,7 +46,7 @@ $release = @{
 }
 
 $specificPackageParameters = @{
-   pakcageVersion = $project.projectVersion
+   packageVersion = $project.projectVersion
 }
 
 Write-Output "Beginning call to read Releases"
