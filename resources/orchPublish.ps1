@@ -53,7 +53,8 @@ $updated = 0
 $releases = $rels | ConvertTo-Json
 $releasesjson = $releases | ConvertFrom-Json
 Write-Output $releasesjson
-$processes = $releases.value | ConvertFrom-Json
+
+$processes = $releasesjson.value | ConvertFrom-Json
 Write-Output $processes
 
 <#
