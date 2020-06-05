@@ -43,7 +43,10 @@ $release = @{
    EnvironmentId = $env:environmentId
    ProcessKey = $project.name
    ProcessVersion = $project.projectVersion
-   packageVersion = $project.projectVersion
+}
+
+$specificPackageParameters = @{
+   pakcageVersion = $project.projectVersion
 }
 
 Write-Output "Beginning call to read Releases"
@@ -58,7 +61,7 @@ $processes = $releasesjson.value
 foreach($i in $processes) {
    if ($i.ProcessKey -eq $release.ProcessKey) {
       Write-Output "Beginning Process Update"
-      Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToSpecificPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
+      Invoke-RestMethod -SkipCertificateCheck -Body $specificPackageParameters "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToSpecificPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
       $updated  = 1
       Write-Output "Process Successfully Updated"
    }
