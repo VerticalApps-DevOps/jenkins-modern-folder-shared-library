@@ -54,32 +54,15 @@ $releases = $rels | ConvertTo-Json
 $releasesjson = $releases | ConvertFrom-Json
 $processes = $releasesjson.value
 
-Write-Output $releasesjson.value
-
 foreach($i in $processes) {
-   Write-Output $i
    if ($i.ProcessKey -eq $release.ProcessKey) {
+      Write-Output "Beginning Process Update"
       Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToLatestPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
       $updated  = 1
+      Write-Output "Process Successfully Updated"
    }
 }
-<#
-$processes = $releasesjson.odata.count
-Write-Output $processes
 
-Write-Output $releases.@odata.count
-Write-Output $releases.value[0].ProcessKey
-
-if ($rels.@odata.count -gt 0) {
-   for ($i = 0; $i -lt $rels.@odata.count; $i++) {
-      if ($rels.value[i].ProcessKey -eq $release.ProcessKey) {
-         Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases($($rels.value[i].Id))/UiPath.Server.Configuration.OData.UpdateToLatestPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
-         $updated  = 1
-      }
-      
-   }
-}
-#>
 if (-Not $updated) {
    Write-Output "Beginning Process Creation"
    Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
