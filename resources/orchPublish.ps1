@@ -50,7 +50,7 @@ $specificPackageParameters = @{
 }
 
 $headers = @{
-   X-UIPATH-OrganizationUnitId=11
+   'X-UIPATH-OrganizationUnitId' = 11
 }
 
 $updateparam = $specificPackageParameters | ConvertTo-Json
