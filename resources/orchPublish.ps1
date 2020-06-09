@@ -56,7 +56,7 @@ $headers = @{
 $updateparam = $specificPackageParameters | ConvertTo-Json
 
 Write-Output "Beginning call to read Releases"
-$rels = Invoke-RestMethod -SkipCertificateCheck "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
+$rels = Invoke-RestMethod -SkipCertificateCheck -Headers $headers "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
 
 $updated = 0
 
