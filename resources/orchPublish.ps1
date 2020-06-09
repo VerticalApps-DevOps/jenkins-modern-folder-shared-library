@@ -49,6 +49,10 @@ $specificPackageParameters = @{
    packageVersion = $project.projectVersion
 }
 
+$headers = @{
+   X-UIPATH-OrganizationUnitId=11
+}
+
 $updateparam = $specificPackageParameters | ConvertTo-Json
 
 Write-Output "Beginning call to read Releases"
@@ -63,7 +67,7 @@ $processes = $releasesjson.value
 foreach($i in $processes) {
    if ($i.ProcessKey -eq $release.ProcessKey -And $i.EnvironmentId -eq $release.EnvironmentId) {
       Write-Output "Beginning Process Update"
-      $updateresponse = Invoke-RestMethod -SkipCertificateCheck -ContentType 'application/json' -Body $updateparam "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToSpecificPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
+      $updateresponse = Invoke-RestMethod -SkipCertificateCheck -Headers $headers -ContentType 'application/json' -Body $updateparam "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToSpecificPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
       $updated  = 1
       Write-Output "Process Successfully Updated"
    }
@@ -71,7 +75,7 @@ foreach($i in $processes) {
 
 if (-Not $updated) {
    Write-Output "Beginning Process Creation"
-   Invoke-RestMethod -SkipCertificateCheck -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
+   Invoke-RestMethod -SkipCertificateCheck -Headers $headers -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
    Write-Output "Process Successfully Created"
 }
 
