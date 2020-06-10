@@ -42,7 +42,7 @@ $release = @{
    Name = $project.name + "_" + $env:environmentId
    EnvironmentId = $env:environmentId
    ProcessKey = $project.name
-   ProcessVersion = $project.
+   ProcessVersion = $project.projectVersion
    packageVersion = $project.projectVersion
 }
 
@@ -60,10 +60,7 @@ Write-Output "Beginning call to read Releases"
 $rels = Invoke-RestMethod -SkipCertificateCheck -Headers $headers "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
 
 $updated = 0
-
-$releases = $rels | ConvertTo-Json
-$releasesjson = $releases | ConvertFrom-Json
-$processes = $releasesjson.value
+Write-Output $release
 
 foreach($i in $processes) {
    if ($i.ProcessKey -eq $release.ProcessKey -And $i.EnvironmentId -eq $release.EnvironmentId) {
