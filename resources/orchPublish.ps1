@@ -60,7 +60,10 @@ Write-Output "Beginning call to read Releases"
 $rels = Invoke-RestMethod -SkipCertificateCheck -Headers $headers "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
 
 $updated = 0
-Write-Output $release
+
+$releases = $rels | ConvertTo-Json
+$releasesjson = $releases | ConvertFrom-Json
+$processes = $releasesjson.value
 
 foreach($i in $processes) {
    if ($i.ProcessKey -eq $release.ProcessKey -And $i.EnvironmentId -eq $release.EnvironmentId) {
