@@ -54,7 +54,7 @@ $headers = @{
    'X-UIPATH-OrganizationUnitId' = $env:folderId
 }
 
-$updateparam = $specificPackageParameters | ConvertTo-Json
+$updateparam = $release | ConvertTo-Json
 
 Write-Output "Beginning call to read Releases"
 $rels = Invoke-RestMethod -SkipCertificateCheck -Headers $headers "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
