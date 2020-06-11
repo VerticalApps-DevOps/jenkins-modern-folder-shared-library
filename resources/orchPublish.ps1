@@ -40,7 +40,7 @@ Write-Output "The package has been successfully published to Orchestrator and ne
 
 $release = @{
    Name = $project.name + "_" + $env:environmentId
-   EnvironmentId = $env:environmentId
+   #EnvironmentId = $env:environmentId
    ProcessKey = $project.name
    ProcessVersion = $project.projectVersion
    packageVersion = $project.projectVersion
