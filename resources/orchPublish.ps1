@@ -51,6 +51,7 @@ $folderId = $null
 foreach($i in $tenantfolders) {
    if ($env:folderName -eq $i.DisplayName) {
       $folderId = $i.Id
+      break
    }
 }
 
@@ -88,6 +89,7 @@ foreach($i in $processes) {
       $updateresponse = Invoke-RestMethod -SkipCertificateCheck -Headers $headers -ContentType 'application/json' -Body $updateparam "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToSpecificPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
       $updated  = 1
       Write-Output "Process Successfully Updated"
+      break
    }
 }
 
