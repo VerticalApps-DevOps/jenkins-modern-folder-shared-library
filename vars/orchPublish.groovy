@@ -1,5 +1,5 @@
-def call(String tenant, long folderId, long environmentId) {
-    withEnv(['url=https://devrpa.verticalapps.com', 'tenancy='+tenant, 'folderId='+folderId, 'environmentId='+environmentId]) {
+def call(String tenant, String folderName, long environmentId) {
+    withEnv(['url=https://devrpa.verticalapps.com', 'tenancy='+tenant, 'folderName='+folderName, 'environmentId='+environmentId]) {
         withCredentials([usernamePassword( credentialsId: 'MFOrchestrator', 
                         usernameVariable: 'user', passwordVariable: 'pwd' )]) {
 
