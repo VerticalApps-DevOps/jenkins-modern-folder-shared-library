@@ -46,7 +46,7 @@ $f = $folders | ConvertTo-Json
 $foldersjson = $f | ConvertFrom-Json
 $tenantfolders = $foldersjson.value
 
-$folderId = -1
+$folderId = $null
 
 foreach($i in $tenantfolders) {
    if ($env:folderName -eq $i.DisplayName) {
