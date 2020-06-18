@@ -1,6 +1,6 @@
-def call(String tenant) {
-    withEnv(['url=https://uipath.verticalapps.com', 'tenancy='+tenant]) {
-        withCredentials([usernamePassword( credentialsId: 'orchestrator-authentication', 
+def call(String tenant, String folderName) {
+    withEnv(['url=https://devrpa.verticalapps.com', 'tenancy='+tenant, 'folderName='+folderName]) {
+        withCredentials([usernamePassword( credentialsId: 'MFOrchestrator', 
                         usernameVariable: 'user', passwordVariable: 'pwd' )]) {
 
             def psscript = libraryResource 'orchPublish.ps1'
