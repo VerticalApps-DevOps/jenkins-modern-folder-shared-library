@@ -8,6 +8,12 @@
   - [Resources](#resources)
 - [Jenkins Snippet Generator](#jenkins-snippet-generator)
 - [Jenkinsfile Example](#jenkinsfile-example)
+- [Library Details](#library-details)
+  - [SonarQube Scan](#sonarqube-scan)
+  - [Pack](#pack)
+  - [Authentication](#authentication)
+  - [Publish](#publish)
+  - [Process Creation](#process-creation)
 - [More Information](#more-information)
 
 
@@ -93,7 +99,7 @@ This shared library is specific to publishing to Modern Folders in UiPath Orches
 
 [SonarQube](https://www.sonarqube.org/) is used to identify bugs and vulnerabilities in UiPath Workflows using [this plugin's](https://github.com/KeithEmanuel/sonar-uipath-plugin) default rules. Code must pass the following SonarQube Quality Gate to progess to the pack and publish build step:
 
-![VerticalApps RPA Quality Gate](https://github.com/VerticalApps-DevOps/jenkins-modern-folder-shared-library/blob/master/resources/sonarqube-quality-gate.png) "VerticalApps RPA Quality Gate"
+![VerticalApps RPA Quality Gate](https://github.com/VerticalApps-DevOps/jenkins-modern-folder-shared-library/blob/master/resources/sonarqube-quality-gate.png "VerticalApps RPA Quality Gate")
 
 ### Pack
 
