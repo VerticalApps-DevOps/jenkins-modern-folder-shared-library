@@ -113,6 +113,10 @@ Call to [UiPath Authentication API](https://docs.uipath.com/orchestrator/v2019/r
 
 Call to [Publish](https://docs.uipath.com/orchestrator/v2019/reference/packages-requests) previously created .nuget package to Orchestrator instance defined in OrchPublish.groovy under the tenant defined the Jenkinsfile example
 
+### Find Folder
+
+Call to Orchestrator API to get all folders for the tenant specified in the Jenkinsfile. If a folder name matches the folder specified in the Jenkinsfile, that folder's ID is stored for call to create / update process.
+
 ### Process Creation
 
 Conditional call to either [create a new process or update an existing process](https://docs.uipath.com/orchestrator/v2019/reference/processes-requests) in the folder defined in the Jenkinsfile example
