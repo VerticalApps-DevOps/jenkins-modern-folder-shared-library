@@ -13,6 +13,7 @@
   - [Pack](#pack)
   - [Authentication](#authentication)
   - [Publish](#publish)
+  - [Find Folder](#find-folder)
   - [Process Creation](#process-creation)
 - [More Information](#more-information)
 
