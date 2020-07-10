@@ -1,5 +1,5 @@
 $project = Get-Content -Raw -Path $env:WORKSPACE\project.json | ConvertFrom-Json
-& "C:\Program Files (x86)\UiPath\Studio\UiRobot.exe" -pack "$env:WORKSPACE\COE\project.json" --output "$env:JENKINS_HOME\jobs\COE\$env:JOB_NAME\builds\$env:BUILD_NUMBER" -v $project.projectVersion
+& "C:\Program Files (x86)\UiPath\Studio\UiRobot.exe" -pack "$env:WORKSPACE\COE\project.json" --output "$env:JENKINS_HOME\jobs\COE\jobs\$env:JOB_NAME\builds\$env:BUILD_NUMBER" -v $project.projectVersion
 
 $auth = @{
    tenancyName = $env:tenancy
