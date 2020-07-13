@@ -1,10 +1,5 @@
-Write-Output "Jenkins Home: " + $env:JENKINS_HOME
-Write-Output "Jenkins Workspace: " + $env:WORKSPACE
-
-$Directory = "$env:JENKINS_HOME\jobs\$env:JOB_NAME\builds\$env:BUILD_NUMBER\"
-
 $project = Get-Content -Raw -Path $env:WORKSPACE\project.json | ConvertFrom-Json
-& "C:\Program Files (x86)\UiPath\Studio\UiRobot.exe" -pack "$env:WORKSPACE\project.json" --output "$env:JENKINS_HOME\jobs\$env:JOB_NAME\builds\$env:BUILD_NUMBER" -v $project.projectVersion
+& "C:\Program Files (x86)\UiPath\Studio\UiRobot.exe" -pack "$env:WORKSPACE\project.json" --output "$env:WORKSPACE" -v $project.projectVersion
 
 Write-Output "Using: Modern Folders Repo"
 
@@ -26,7 +21,7 @@ $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
 Write-Output "Beginning UIPath Orchestrator publish"
  
 $Package = $project.name + "." + $project.projectVersion + ".nupkg"
-$FilePath = $Directory + $Package
+$FilePath = $env:WORKSPACE + $Package
 $FieldName = $Package.Replace(".nupkg","")
 $ContentType = 'multipart/form-data'
 
