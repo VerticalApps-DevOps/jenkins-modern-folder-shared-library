@@ -1,8 +1,6 @@
 $project = Get-Content -Raw -Path $env:WORKSPACE\project.json | ConvertFrom-Json
 & "C:\Program Files (x86)\UiPath\Studio\UiRobot.exe" -pack "$env:WORKSPACE\project.json" --output "$env:WORKSPACE" -v $project.projectVersion
 
-Write-Output "Using: Modern Folders Repo"
-
 $auth = @{
    tenancyName = $env:tenancy
    usernameOrEmailAddress = $env:user
@@ -22,6 +20,7 @@ Write-Output "Beginning UIPath Orchestrator publish"
  
 $Package = $project.name + "." + $project.projectVersion + ".nupkg"
 $FilePath = $env:WORKSPACE + $Package
+Write-Output "File: " + $FilePath
 $FieldName = $Package.Replace(".nupkg","")
 $ContentType = 'multipart/form-data'
 
