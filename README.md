@@ -8,6 +8,13 @@
   - [Resources](#resources)
 - [Jenkins Snippet Generator](#jenkins-snippet-generator)
 - [Jenkinsfile Example](#jenkinsfile-example)
+- [Library Details](#library-details)
+  - [SonarQube Scan](#sonarqube-scan)
+  - [Pack](#pack)
+  - [Authentication](#authentication)
+  - [Publish](#publish)
+  - [Find Folder](#find-folder)
+  - [Process Creation](#process-creation)
 - [More Information](#more-information)
 
 
@@ -46,7 +53,7 @@ You can access the syntax generator from your Jenkins on /pipeline-syntax/ path.
 
     http://your-jenkins-url.com/pipeline-syntax
 
-![Jenkins Pipeline Syntax Generator](https://github.com/VerticalApps-DevOps/jenkins-shared-library/blob/master/resources/Jenkins-Pipeline-Generator.png "Jenkins Pipeline Syntax Generator") 
+![Jenkins Pipeline Syntax Generator](https://github.com/VerticalApps-DevOps/jenkins-modern-folder-shared-library/blob/master/resources/Jenkins-Pipeline-Generator.png "Jenkins Pipeline Syntax Generator") 
 
 ## Jenkinsfile Example
 
@@ -55,28 +62,65 @@ To use the jenkins shared library you will need to put a jenkinsfile in the root
     @Library('jenkins-shared-library@master') _
 
     pipeline {
-        agent any
-        stages {
-            stage('Git Checkout') {
-                steps {
-                    gitCheckout(
-                        branch: "master",
-                        url: 'https://github.com/VerticalApps-DevOps/mpldemo.git'
-                    )
-                }
-            }
-            stage('Build') {
-                steps {
-                    powershell returnStatus: true, script: '.\\build.ps1'
-                }
-            }
-            stage('Post-Build') {
-                steps {
-                    postBuild()
-                }
-            }
-        }
+      agent any
+      stages {
+          stage('Git Checkout') {
+              steps {
+                  gitCheckout(
+                      branch: "${env.GIT_BRANCH}",
+                      url: "${env.GIT_URL}"
+                  )
+              }
+          }
+          stage('Sonar') {
+              steps {
+                  sonarQubeScan()
+              }
+          }
+          stage('Pack and Publish') {
+              steps {
+                  script {
+                      orchPublish("VerticalApps", "PAER") 
+                  }
+              }
+          }
+          stage('Post-Build') {
+              steps {
+                  postBuild()
+              }
+          }
+      }
     }
+
+## Library Details
+
+This shared library is specific to publishing to Modern Folders in UiPath Orchestrator. 
+
+### SonarQube Scan
+
+[SonarQube](https://www.sonarqube.org/) is used to identify bugs and vulnerabilities in UiPath Workflows using [this plugin's](https://github.com/KeithEmanuel/sonar-uipath-plugin) default rules. Code must pass the following SonarQube Quality Gate to progess to the pack and publish build step:
+
+![VerticalApps RPA Quality Gate](https://github.com/VerticalApps-DevOps/jenkins-modern-folder-shared-library/blob/master/resources/sonarqube-quality-gate.png "VerticalApps RPA Quality Gate")
+
+### Pack
+
+[UiPathRobot.exe Pack command](https://docs.uipath.com/robot/docs/arguments-description#section-the-pack-command) called via a PowerShell script to create the .nuget package 
+
+### Authentication
+
+Call to [UiPath Authentication API](https://docs.uipath.com/orchestrator/v2019/reference/authenticating)
+
+### Publish
+
+Call to [Publish](https://docs.uipath.com/orchestrator/v2019/reference/packages-requests) previously created .nuget package to Orchestrator instance defined in OrchPublish.groovy under the tenant defined the Jenkinsfile example
+
+### Find Folder
+
+Call to Orchestrator API to get all folders for the tenant specified in the Jenkinsfile. If a folder name matches the folder specified in the Jenkinsfile, that folder's ID is stored for call to create / update process.
+
+### Process Creation
+
+Conditional call to either [create a new process or update an existing process](https://docs.uipath.com/orchestrator/v2019/reference/processes-requests) in the folder defined in the Jenkinsfile example
 
 ## More Information
 
