@@ -19,7 +19,7 @@ $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
 Write-Output "Beginning UIPath Orchestrator publish"
  
 $Package = $project.name + "." + $project.projectVersion + ".nupkg"
-$FilePath = $env:WORKSPACE + $Package
+$FilePath = $env:WORKSPACE + "\" + $Package
 Write-Output "File: " + $FilePath
 $FieldName = $Package.Replace(".nupkg","")
 $ContentType = 'multipart/form-data'
