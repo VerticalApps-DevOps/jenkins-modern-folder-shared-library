@@ -1,3 +1,8 @@
+Write-Output "Jenkins Home: $env:JENKINS_HOME"
+Write-Output "Jenkins Workspace: $env:WORKSPACE"
+
+$Directory = "$env:JENKINS_HOME\jobs\$env:JOB_NAME\builds\$env:BUILD_NUMBER\"
+
 $project = Get-Content -Raw -Path $env:WORKSPACE\project.json | ConvertFrom-Json
 & "C:\Program Files (x86)\UiPath\Studio\UiRobot.exe" -pack "$env:WORKSPACE\project.json" --output "$env:JENKINS_HOME\jobs\$env:JOB_NAME\builds\$env:BUILD_NUMBER" -v $project.projectVersion
 
@@ -20,7 +25,6 @@ $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
 
 Write-Output "Beginning UIPath Orchestrator publish"
  
-$Directory = "$env:JENKINS_HOME\jobs\$env:JOB_NAME\builds\$env:BUILD_NUMBER\"
 $Package = $project.name + "." + $project.projectVersion + ".nupkg"
 $FilePath = $Directory + $Package
 $FieldName = $Package.Replace(".nupkg","")
