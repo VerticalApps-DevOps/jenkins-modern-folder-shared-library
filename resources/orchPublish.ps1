@@ -35,66 +35,72 @@ $FileContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue
 $MultipartContent = [System.Net.Http.MultipartFormDataContent]::new()
 $MultipartContent.Add($FileContent)
 
-Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Processes/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($tokenstring)
-Write-Output "The package has been successfully published to Orchestrator and nexus"
+if ($project.runtimeOptions.executionType -eq "Library") {
+   Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Libraries/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($tokenstring)
+   Write-Output "The package has been successfully published to Orchestrator and nexus"
+} else {
+   Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Processes/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($tokenstring)
+   Write-Output "The package has been successfully published to Orchestrator and nexus"
 
-Write-Output "Reading folders for current tenant"
-$folders = Invoke-RestMethod -SkipCertificateCheck -Headers $headers "$env:url/odata/Folders" -Method Get -Authentication Bearer -Token ($tokenstring)
-Write-Output "Folders successfully retrieved"
+   Write-Output "Reading folders for current tenant"
+   $folders = Invoke-RestMethod -SkipCertificateCheck -Headers $headers "$env:url/odata/Folders" -Method Get -Authentication Bearer -Token ($tokenstring)
+   Write-Output "Folders successfully retrieved"
 
-$f = $folders | ConvertTo-Json
-$foldersjson = $f | ConvertFrom-Json
-$tenantfolders = $foldersjson.value
+   $f = $folders | ConvertTo-Json
+   $foldersjson = $f | ConvertFrom-Json
+   $tenantfolders = $foldersjson.value
 
-$folderId = $null
+   $folderId = $null
 
-foreach($i in $tenantfolders) {
-   if ($env:folderName -eq $i.DisplayName) {
-      $folderId = $i.Id
-      break
+   foreach($i in $tenantfolders) {
+      if ($env:folderName -eq $i.DisplayName) {
+         $folderId = $i.Id
+         break
+      }
+   }
+
+   $release = @{
+      Name = $project.name + "_" + $env:environmentId
+      #EnvironmentId = $env:environmentId
+      ProcessKey = $project.name
+      ProcessVersion = $project.projectVersion
+      packageVersion = $project.projectVersion
+   }
+
+   $specificPackageParameters = @{
+      packageVersion = $project.projectVersion
+   }
+
+   $headers = @{
+      'X-UIPATH-OrganizationUnitId' = $folderId
+   }
+
+   $updateparam = $specificPackageParameters | ConvertTo-Json
+
+   Write-Output "Beginning call to read Releases"
+   $rels = Invoke-RestMethod -SkipCertificateCheck -Headers $headers "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
+   Write-Output "Releases returned and read"
+
+   $updated = 0
+
+   $releases = $rels | ConvertTo-Json
+   $releasesjson = $releases | ConvertFrom-Json
+   $processes = $releasesjson.value
+
+   foreach($i in $processes) {
+      if ($i.ProcessKey -eq $release.ProcessKey) {
+         Write-Output "Beginning Process Update"
+         $updateresponse = Invoke-RestMethod -SkipCertificateCheck -Headers $headers -ContentType 'application/json' -Body $updateparam "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToSpecificPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
+         $updated  = 1
+         Write-Output "Process Successfully Updated"
+         break
+      }
+   }
+
+   if (-Not $updated) {
+      Write-Output "Beginning Process Creation"
+      Invoke-RestMethod -SkipCertificateCheck -Headers $headers -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
+      Write-Output "Process Successfully Created"
    }
 }
 
-$release = @{
-   Name = $project.name + "_" + $env:environmentId
-   #EnvironmentId = $env:environmentId
-   ProcessKey = $project.name
-   ProcessVersion = $project.projectVersion
-   packageVersion = $project.projectVersion
-}
-
-$specificPackageParameters = @{
-   packageVersion = $project.projectVersion
-}
-
-$headers = @{
-   'X-UIPATH-OrganizationUnitId' = $folderId
-}
-
-$updateparam = $specificPackageParameters | ConvertTo-Json
-
-Write-Output "Beginning call to read Releases"
-$rels = Invoke-RestMethod -SkipCertificateCheck -Headers $headers "$env:url/odata/Releases" -Method Get -Authentication Bearer -Token ($tokenstring)
-Write-Output "Releases returned and read"
-
-$updated = 0
-
-$releases = $rels | ConvertTo-Json
-$releasesjson = $releases | ConvertFrom-Json
-$processes = $releasesjson.value
-
-foreach($i in $processes) {
-   if ($i.ProcessKey -eq $release.ProcessKey) {
-      Write-Output "Beginning Process Update"
-      $updateresponse = Invoke-RestMethod -SkipCertificateCheck -Headers $headers -ContentType 'application/json' -Body $updateparam "$env:url/odata/Releases($($i.Id))/UiPath.Server.Configuration.OData.UpdateToSpecificPackageVersion" -Method Post -Authentication Bearer -Token ($tokenstring)
-      $updated  = 1
-      Write-Output "Process Successfully Updated"
-      break
-   }
-}
-
-if (-Not $updated) {
-   Write-Output "Beginning Process Creation"
-   Invoke-RestMethod -SkipCertificateCheck -Headers $headers -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
-   Write-Output "Process Successfully Created"
-}
