@@ -35,11 +35,10 @@ $FileContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue
 $MultipartContent = [System.Net.Http.MultipartFormDataContent]::new()
 $MultipartContent.Add($FileContent)
 
-Write-Output $project.designOptions.outputType
-
 if ($project.designOptions.outputType -eq "Library") {
+   Write-Output "Publishing Library"
    Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Libraries/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($tokenstring)
-   Write-Output "The package has been successfully published to Orchestrator and nexus"
+   Write-Output "The library has been successfully published to Orchestrator and nexus"
 } else {
    Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Processes/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($tokenstring)
    Write-Output "The package has been successfully published to Orchestrator and nexus"
