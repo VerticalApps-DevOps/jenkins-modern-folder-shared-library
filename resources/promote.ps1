@@ -66,8 +66,6 @@ $specificPackageParameters = @{
    packageVersion = $env:PackageVersion
 }
 
-Write-Output "Folder ID: " $folderId
-
 $headers = @{
    'X-UIPATH-OrganizationUnitId' = $folderId
 }
@@ -93,6 +91,8 @@ foreach($i in $processes) {
       break
    }
 }
+
+Write-Output "Release: " $release
 
 if (-Not $updated) {
    Write-Output "Beginning Process Creation"
