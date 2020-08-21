@@ -99,9 +99,15 @@ if ($project.designOptions.outputType -eq "Library") {
    }
 
    if (-Not $updated) {
-      Write-Output "Beginning Process Creation"
-      Invoke-RestMethod -SkipCertificateCheck -Headers $headers -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
-      Write-Output "Process Successfully Created"
+      try {
+         Write-Output "Beginning Process Creation"
+         Invoke-RestMethod -SkipCertificateCheck -Headers $headers -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
+         Write-Output "Process Successfully Created"
+      } catch {
+         Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
+         Write-Host "StatusDescription:" $_.Exception.Response.StatusDescription
+      }
+      
    }
 }
 

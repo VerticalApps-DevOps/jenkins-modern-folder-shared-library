@@ -58,7 +58,7 @@ foreach($i in $tenantfolders) {
 $release = @{
    Name = $env:PackageName
    ProcessKey = $env:PackageName
-   ProcessVersion = $env:PackageVersion
+   ProcessVersion = $env:PackageName
    packageVersion = $env:PackageVersion
 }
 
@@ -93,7 +93,12 @@ foreach($i in $processes) {
 }
 
 if (-Not $updated) {
-   Write-Output "Beginning Process Creation"
-   Invoke-RestMethod -Headers $headers -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
-   Write-Output "Process Successfully Created"
+   ry {
+      Write-Output "Beginning Process Creation"
+      Invoke-RestMethod -SkipCertificateCheck -Headers $headers -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
+      Write-Output "Process Successfully Created"
+   } catch {
+      Write-Output "StatusCode:" $_.Exception.Response.StatusCode.value__ 
+      Write-Output "StatusDescription:" $_.Exception.Response.StatusDescription
+   }
 }
