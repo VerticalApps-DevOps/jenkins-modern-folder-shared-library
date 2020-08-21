@@ -4,7 +4,7 @@ $package = Invoke-RestMethod "$nexusUrl/${env:PackageName}/${env:PackageVersion}
 $auth = @{
    tenancyName = $env:tenancy
    usernameOrEmailAddress = $env:user
-   password = $env:password
+   password = $env:pwd
 }
 
 Write-Output "Beginning UIPath Orchestrator Authentication"
