@@ -7,7 +7,6 @@ $auth = @{
    password = $env:pwd
 }
 
-Write-Output "Beginning UIPath Orchestrator Authentication"
 $authjson = $auth | ConvertTo-Json
 $authkey = Invoke-RestMethod "$env:url/api/Account/Authenticate" -Method Post -Body $authjson -ContentType 'application/json'
 $authjson = $authkey | ConvertTo-Json
@@ -66,6 +65,8 @@ $release = @{
 $specificPackageParameters = @{
    packageVersion = $env:PackageVersion
 }
+
+Write-Output "Folder ID: " $folderId
 
 $headers = @{
    'X-UIPATH-OrganizationUnitId' = $folderId
