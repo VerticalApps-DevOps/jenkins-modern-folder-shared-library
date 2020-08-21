@@ -98,6 +98,6 @@ try {
    }
 } catch {
    Write-Output "StatusCode:" $_.Exception.Response.StatusCode.value__ 
-   Write-Output "Response:" $_.Exception.Response
+   Write-Output "Exception:" $_.Exception
    exit 1
 }
