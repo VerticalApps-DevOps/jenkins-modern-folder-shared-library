@@ -19,7 +19,7 @@ try {
    
    $Package = $env:PackageName + "." + $env:PackageVersion + ".nupkg"
    $FilePath = $env:WORKSPACE + "\" + $Package
-   Write-Output "File: " + $FilePath
+   Write-Output "File: " $FilePath
    $FieldName = $Package.Replace(".nupkg","")
    $ContentType = 'multipart/form-data'
 
@@ -97,7 +97,7 @@ try {
       Write-Output "Process Successfully Created"
    }
 } catch {
-   Write-Output "StatusCode:" $_.ErrorRecord.Response.StatusCode.value__ 
-   Write-Output "StatusDescription:" $_.ErrorRecord.Response.StatusDescription
+   Write-Output "StatusCode:" $_.Exception.Response.StatusCode.value__ 
+   Write-Output "Response:" $_.Exception.Response
    exit 1
 }
