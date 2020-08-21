@@ -97,7 +97,7 @@ try {
       Write-Output "Process Successfully Created"
    }
 } catch {
-   Write-Output "StatusCode:" $_.Exception.Response.StatusCode.value__ 
-   Write-Output "StatusDescription:" $_.Exception.Response.StatusDescription
+   Write-Output "StatusCode:" $_.ErrorRecord.Response.StatusCode.value__ 
+   Write-Output "StatusDescription:" $_.ErrorRecord.Response.StatusDescription
    exit 1
 }
