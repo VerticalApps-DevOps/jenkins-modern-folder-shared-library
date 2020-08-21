@@ -61,7 +61,7 @@ if ($project.designOptions.outputType -eq "Library") {
    }
 
    $release = @{
-      Name = $project.name + "_" + $env:environmentId
+      Name = $project.name
       #EnvironmentId = $env:environmentId
       ProcessKey = $project.name
       ProcessVersion = $project.projectVersion
