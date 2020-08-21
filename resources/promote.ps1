@@ -58,7 +58,7 @@ foreach($i in $tenantfolders) {
 $release = @{
    Name = $env:PackageName
    ProcessKey = $env:PackageName
-   ProcessVersion = $env:PackageName
+   ProcessVersion = $env:PackageVersion
    packageVersion = $env:PackageVersion
 }
 
