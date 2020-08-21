@@ -93,7 +93,7 @@ foreach($i in $processes) {
 }
 
 if (-Not $updated) {
-   ry {
+   try {
       Write-Output "Beginning Process Creation"
       Invoke-RestMethod -SkipCertificateCheck -Headers $headers -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
       Write-Output "Process Successfully Created"
