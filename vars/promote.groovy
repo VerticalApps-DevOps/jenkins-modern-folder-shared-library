@@ -1,5 +1,5 @@
 def call() {
-    withEnv(['url=https://devrpa.verticalapps.com') {
+    withEnv(['url=https://devrpa.verticalapps.com']) {
         withCredentials([usernamePassword( credentialsId: 'MFOrchestrator', 
                         usernameVariable: 'user', passwordVariable: 'pwd' )]) {
 
