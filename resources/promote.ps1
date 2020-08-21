@@ -92,8 +92,6 @@ foreach($i in $processes) {
    }
 }
 
-Write-Output "Release: " $release
-
 if (-Not $updated) {
    Write-Output "Beginning Process Creation"
    Invoke-RestMethod -Headers $headers -Body $release "$env:url/odata/Releases" -Method Post -Authentication Bearer -Token ($tokenstring)
