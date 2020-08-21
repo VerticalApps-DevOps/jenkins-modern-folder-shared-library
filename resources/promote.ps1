@@ -34,9 +34,13 @@ $FileContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue
 $MultipartContent = [System.Net.Http.MultipartFormDataContent]::new()
 $MultipartContent.Add($FileContent)
 
-
-Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Processes/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($tokenstring)
-Write-Output "The package has been successfully published to Orchestrator and nexus"
+try {
+   Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Processes/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($tokenstring)
+   Write-Output "The package has been successfully published to Orchestrator and nexus"
+} catch {
+   Write-Output "StatusCode:" $_.Exception.Response.StatusCode.value__ 
+   Write-Output "StatusDescription:" $_.Exception.Response.StatusDescription
+}
 
 Write-Output "Reading folders for current tenant"
 $folders = Invoke-RestMethod -SkipCertificateCheck -Headers $headers "$env:url/odata/Folders" -Method Get -Authentication Bearer -Token ($tokenstring)
