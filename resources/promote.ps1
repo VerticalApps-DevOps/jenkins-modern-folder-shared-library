@@ -1,12 +1,13 @@
-$nexusUrl = "http://ec2-54-196-97-102.compute-1.amazonaws.com:8081/repository/processes-verticalapps"
-$package = Invoke-RestMethod "$nexusUrl/${env:PackageName}/${env:PackageVersion}" -Method Get -OutFile "${env:workspace}/${env:PackageName}.${env:PackageVersion}.nupkg"
-
-$auth = @{
-   tenancyName = $env:tenancy
-   usernameOrEmailAddress = $env:user
-   password = $env:pwd
-}
 try {
+   $nexusUrl = "http://ec2-54-196-97-102.compute-1.amazonaws.com:8081/repository/processes-verticalapps"
+   $package = Invoke-RestMethod "$nexusUrl/${env:PackageName}/${env:PackageVersion}" -Method Get -OutFile "${env:workspace}/${env:PackageName}.${env:PackageVersion}.nupkg"
+
+   $auth = @{
+      tenancyName = $env:tenancy
+      usernameOrEmailAddress = $env:user
+      password = $env:pwd
+   }
+
    $authjson = $auth | ConvertTo-Json
    $authkey = Invoke-RestMethod "$env:url/api/Account/Authenticate" -Method Post -Body $authjson -ContentType 'application/json'
    $authjson = $authkey | ConvertTo-Json
