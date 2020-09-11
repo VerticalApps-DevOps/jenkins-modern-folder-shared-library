@@ -1,6 +1,5 @@
 try {
-   $nexusUrl = "http://ec2-54-196-97-102.compute-1.amazonaws.com:8081/repository/processes-verticalapps"
-   $package = Invoke-RestMethod "$nexusUrl/${env:PackageName}/${env:PackageVersion}" -Method Get -OutFile "${env:workspace}/${env:PackageName}.${env:PackageVersion}.nupkg"
+   $package = Invoke-RestMethod "$env:nexusUrl/${env:PackageName}/${env:PackageVersion}" -Method Get -OutFile "${env:workspace}/${env:PackageName}.${env:PackageVersion}.nupkg"
 
    $auth = @{
       tenancyName = $env:tenancy
