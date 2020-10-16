@@ -18,7 +18,8 @@ try {
    $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
 
    Write-Output "Beginning UIPath Orchestrator publish"
-   
+   # Replace spaces with underscores
+   $project.name = $project.name.Replace(" ","_")
    $Package = $project.name + "." + $project.projectVersion + ".nupkg"
    $FilePath = $env:WORKSPACE + "\" + $Package
    Write-Output "File: " + $FilePath
