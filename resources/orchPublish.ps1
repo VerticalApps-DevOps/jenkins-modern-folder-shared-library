@@ -17,12 +17,10 @@ try {
 
    $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
 
+   $cleanName = $project.name.Trim().Replace(" ",".")
+
    Write-Output "Beginning UIPath Orchestrator publish"
-   $Package = $project.name + "." + $project.projectVersion + ".nupkg"
-
-   $cleanName = $project.name.Trim().Replace(" ","_")
-   Rename-Item -Path $Package -NewName $cleanName + "." + $project.projectVersion + ".nupkg"
-
+   $Package = $cleanName + "." + $project.projectVersion + ".nupkg"
    $FilePath = $env:WORKSPACE + "\" + $Package
    Write-Output "File: " + $FilePath
    $FieldName = $Package.Replace(".nupkg","")
