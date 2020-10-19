@@ -65,7 +65,7 @@ try {
       $release = @{
          Name = $project.name
          #EnvironmentId = $env:environmentId
-         ProcessKey = $project.name
+         ProcessKey = $cleanName
          ProcessVersion = $project.projectVersion
          packageVersion = $project.projectVersion
       }
