@@ -17,9 +17,10 @@ try {
 
    $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
 
+   $cleanName = $project.name.Trim().Replace(" ",".")
+
    Write-Output "Beginning UIPath Orchestrator publish"
-   
-   $Package = $project.name + "." + $project.projectVersion + ".nupkg"
+   $Package = $cleanName + "." + $project.projectVersion + ".nupkg"
    $FilePath = $env:WORKSPACE + "\" + $Package
    Write-Output "File: " + $FilePath
    $FieldName = $Package.Replace(".nupkg","")
@@ -64,7 +65,7 @@ try {
       $release = @{
          Name = $project.name
          #EnvironmentId = $env:environmentId
-         ProcessKey = $project.name
+         ProcessKey = $cleanName
          ProcessVersion = $project.projectVersion
          packageVersion = $project.projectVersion
       }
