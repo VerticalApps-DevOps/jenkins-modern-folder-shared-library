@@ -1,6 +1,6 @@
 def call() {
-    withEnv(['url=https://devrpa.verticalapps.com', 
-    'nexusUrl=http://ec2-54-196-97-102.compute-1.amazonaws.com:8081/repository/processes-verticalapps']) {
+    withEnv(['url=ec2-54-164-120-194.compute-1.amazonaws.com', 
+    'nexusUrl=http://ec2-54-234-181-83.compute-1.amazonaws.com:8081/repository/processes-verticalapps']) {
         withCredentials([usernamePassword( credentialsId: 'MFOrchestrator', 
                         usernameVariable: 'user', passwordVariable: 'pwd' )]) {
 
