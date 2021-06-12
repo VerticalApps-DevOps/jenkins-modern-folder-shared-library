@@ -10,7 +10,7 @@ try {
 
     Write-Output "Beginning UIPath Orchestrator Authentication"
     $authjson = $auth | ConvertTo-Json
-    $authkey = Invoke-RestMethod -SkipCertificateCheck "https://devrpa.verticalappps.com/api/Account/Authenticate" -Method Post -Body $authjson -ContentType 'application/json'
+    $authkey = Invoke-RestMethod -SkipCertificateCheck "https://devrpa.verticalapps.com/api/Account/Authenticate" -Method Post -Body $authjson -ContentType 'application/json'
     $authjson = $authkey | ConvertTo-Json
     $token = $authjson | ConvertFrom-Json
     Set-Variable -Name "ts" -Value $token.result

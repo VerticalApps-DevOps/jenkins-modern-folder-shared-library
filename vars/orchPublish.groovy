@@ -3,9 +3,14 @@ def call(String tenant, String folderName) {
         withCredentials([usernamePassword( credentialsId: 'MFOrchestrator', 
                         usernameVariable: 'user', passwordVariable: 'pwd' )]) {
 
-            def psscript = libraryResource 'orchPublish.ps1'
+            def psscript = libraryResource 'auth.ps1'
 
             psCall = pwsh returnStdout: true, script: psscript 
+            withEnv(['token=pscall']) {
+                def publishscript = libraryResource 'publish.ps1'
+
+                publishCall = pwsh returnStdout: true, script: publishscript 
+            }
             println psCall           
         }
     }
