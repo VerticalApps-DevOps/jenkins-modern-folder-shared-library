@@ -13,7 +13,7 @@ try {
     Set-Variable -Name "ts" -Value $token.result
 
     $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
-
+    Write-Output "Successfully Authenticated"
     return $tokenstring
 } catch {
     Write-Output "StatusCode:" $_.Exception.Response.StatusCode.value__ 
