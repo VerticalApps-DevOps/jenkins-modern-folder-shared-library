@@ -5,7 +5,7 @@ try {
         password = $env:pwd
     }
 
-    Write-Output "Beginning UIPath Orchestrator Authentication"
+    Write-Host "Beginning UIPath Orchestrator Authentication"
     $authjson = $auth | ConvertTo-Json
     $authkey = Invoke-RestMethod -SkipCertificateCheck "$env:url/api/Account/Authenticate" -Method Post -Body $authjson -ContentType 'application/json'
     $authjson = $authkey | ConvertTo-Json
@@ -13,10 +13,10 @@ try {
     Set-Variable -Name "ts" -Value $token.result
 
     $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
-    Write-Output "Successfully Authenticated"
+    Write-Host "Successfully Authenticated"
     return $tokenstring
 } catch {
-    Write-Output "StatusCode:" $_.Exception.Response.StatusCode.value__ 
-    Write-Output "Exception:" $_.Exception
+    Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
+    Write-Host "Exception:" $_.Exception
     exit 1
 }
