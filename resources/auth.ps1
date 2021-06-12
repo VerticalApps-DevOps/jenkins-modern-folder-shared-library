@@ -1,11 +1,8 @@
 try {
     $auth = @{
-        tenancyName = "Default"
-        usernameOrEmailAddress = "Jenkins"
-        password = "xA6dbeaQH6thKKHE"
-        #tenancyName = $env:tenancy
-        #usernameOrEmailAddress = $env:user
-        #password = $env:pwd
+        tenancyName = $env:tenancy
+        usernameOrEmailAddress = $env:user
+        password = $env:pwd
     }
 
     Write-Output "Beginning UIPath Orchestrator Authentication"

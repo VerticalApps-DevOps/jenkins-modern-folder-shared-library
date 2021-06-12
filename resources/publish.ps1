@@ -17,7 +17,7 @@ try{
     $MultipartContent = [System.Net.Http.MultipartFormDataContent]::new()
     $MultipartContent.Add($FileContent)
 
-    Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "https://devrpa.verticalapps.com/odata/Processes/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($env:token)
+    Invoke-RestMethod -SkipCertificateCheck -Body $MultipartContent "$env:url/odata/Processes/UiPath.Server.Configuration.OData.UploadPackage" -Method Post -Authentication Bearer -Token ($env:token)
     Write-Output "The package has been successfully published to Orchestrator"
 } catch {
    Write-Output "StatusCode:" $_.Exception.Response.StatusCode.value__ 
