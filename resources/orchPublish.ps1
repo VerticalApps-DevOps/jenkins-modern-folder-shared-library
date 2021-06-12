@@ -17,6 +17,8 @@ try {
 
    $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
 
+   return $tokenstring
+
    $cleanName = $project.name.Trim().Replace(" ",".")
 
    Write-Output "Beginning UIPath Orchestrator publish"
