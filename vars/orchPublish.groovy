@@ -5,11 +5,11 @@ def call(String tenant, String folderName) {
 
             def psscript = libraryResource 'auth.ps1'
 
-            psCall = pwsh returnStdout: true, script: psscript 
+            psCall = pwsh returnStdout: true, script: psscript, returnStatus: true
             withEnv(['token=pscall']) {
                 def publishscript = libraryResource 'publish.ps1'
 
-                publishCall = pwsh returnStdout: true, script: publishscript 
+                publishCall = pwsh returnStdout: true, script: publishscript, returnStatus: true
             }
             println psCall           
         }
