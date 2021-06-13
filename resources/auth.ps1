@@ -18,7 +18,7 @@ try {
 
     $tokenstring = ConvertTo-SecureString $ts -AsPlainText -Force
     Write-Host "Successfully Authenticated"
-    return $tokenstring
+    $PSScriptRoot\publish.ps1 -token $tokenString
 } catch {
     Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
     Write-Host "Exception:" $_.Exception
