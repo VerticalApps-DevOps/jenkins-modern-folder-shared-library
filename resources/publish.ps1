@@ -1,3 +1,4 @@
+param([SecureString]$token)
 try{   
     Write-Output "Beginning UIPath Orchestrator publish"
     $Package = "Test.1.2.7.nupkg"
